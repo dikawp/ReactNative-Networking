@@ -1,30 +1,49 @@
-import { Heading, Text, Center, Image, Box} from "@gluestack-ui/themed";
-import { ScrollView } from "react-native";
+import {
+  Box,
+  Heading,
+  Text,
+  Image,
+  Divider,
+  ScrollView,
+  Button,
+  ButtonText,
+} from "@gluestack-ui/themed";
 import { Header } from "../components";
-import { useLocalSearchParams } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
+import { format } from "date-fns";
 
 const NewsDetail = () => {
   const params = useLocalSearchParams();
   return (
     <>
-       <ScrollView>
       <Header title={"News"} withBack={true} />
+      <ScrollView>
         <Image
-                source={{ uri: params.image }}
-                w="$full"
-                h="$80"
-                alt="Image Data"
-              />
-        <Text padding={10}>{params.date} </Text>
-        <Text padding={10} fontSize={20} bold>{params.title}</Text>
-        <Box
-            p={"$2"}
-            borderBottomColor={"$coolGray300"}
-            borderBottomWidth={5}
-            flexDirection="row"
-            flex={1}
-          ></Box>
-        <Text padding={10}>{params.content}</Text>
+          source={{ uri: params.image }}
+          w={"$full"}
+          h={"$48"}
+          alt="News Image"
+          role="img"
+        />
+        <Box p={"$4"}>
+          <Text mb={"$1"}>{format(new Date(params.date), "dd MMMM yyyy")}</Text>
+          <Heading lineHeight={"$xl"} fontSize={"$2xl"}>
+            {params.title}
+          </Heading>
+          <Divider my={"$4"} />
+          <Text marginBottom={"$4"}>{params.desc}</Text>
+          <Link
+            href={{
+              pathname: "/web",
+              params: { link: params.link },
+            }}
+            asChild
+          >
+            <Button backgroundColor="$red700" borderRadius={"$full"}>
+              <ButtonText>Read More</ButtonText>
+            </Button>
+          </Link>
+        </Box>
       </ScrollView>
     </>
   );
